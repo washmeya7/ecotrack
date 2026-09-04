@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EcoTrack</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    
+<header class="navbar">
+
+    <!-- 3 DOT MENU -->
+    <div class="header-menu">
+
+        <button
+            type="button"
+            class="menu-dots"
+            onclick="toggleHeaderMenu()"
+            aria-label="Open menu"
+        >
+            ⋮
+        </button>
+
+        <div id="headerDropdown" class="header-dropdown">
+
+            <a href="/about">
+                ℹ️ About EcoTrack
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="logo">
+        🌱 EcoTrack
+    </div>
+
+
+    <div class="nav-text">
+        AI-Based Climate Action Platform
+    </div>
+    <!-- AUTH BUTTONS -->
+<div class="auth-area" id="authArea">
+
+    <!-- BEFORE LOGIN -->
+    <div class="logged-out-area" id="loggedOutArea">
+
+        <a href="{{ url_for('register_page') }}" class="nav-auth-button register-button">
+            Register
+        </a>
+
+        <a href="{{ url_for('login_page') }}" class="nav-auth-button login-button">
+            Login
+        </a>
+
+    </div>
+
+
+    <!-- AFTER LOGIN -->
+    <div class="logged-in-area" id="loggedInArea" style="display: none;">
+
+        <button
+    type="button"
+    id="userMenuButton"
+    class="user-menu-button"
+    onclick="document.getElementById('userDropdown').classList.toggle('show')"
+>
+
+            <span>👤</span>
+
+            <span id="navUserName">
+                User
+            </span>
+
+            <span>▼</span>
+
+        </button>
+
+
+        <div id="userDropdown" class="user-dropdown">
+
+            <a href="/dashboard">
+                📊 My Eco Dashboard
+            </a>
+
+            <a href="/profile">
+                👤 My Profile
+            </a>
+
+            <a href="/history">
+                📈 My Eco History
+            </a>
+
+            <a href="settings">
+                ⚙️ Account Settings
+            </a>
+
+            <div class="dropdown-divider"></div>
+
+            <a href="/logout" class="logout-link">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</header>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div>
+
+            <p class="tag">
+                🌍 MAKE YOUR IMPACT COUNT
+            </p>
+
+            <h1>
+                Understand your footprint.<br>
+                <span>Take action for the planet.</span>
+            </h1>
+
+            <p class="hero-text">
+                EcoTrack analyzes your everyday lifestyle and helps
+                you discover simple actions to reduce your environmental impact.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+        <section class="card">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>🌱 Your Lifestyle</h2>
+
+                    <p>
+                        Tell us about your everyday activities.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <!-- TRANSPORT -->
+
+                <div class="input-card">
+
+                    <div class="icon">
+                        🚗
+                    </div>
+
+                    <label>
+                        Transportation
+                    </label>
+
+                    <p>
+                        Approximate km travelled per week
+                    </p>
+
+                    <input
+                        type="number"
+                        id="transportation"
+                        placeholder="Example: 100"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <!-- ELECTRICITY -->
+
+                <div class="input-card">
+
+                    <div class="icon">
+                        ⚡
+                    </div>
+
+                    <label>
+                        Electricity
+                    </label>
+
+                    <p>
+                        Approximate electricity usage per month
+                    </p>
+
+                    <input
+                        type="number"
+                        id="electricity"
+                        placeholder="Example: 150"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <!-- FOOD -->
+
+                <div class="input-card">
+
+                    <div class="icon">
+                        🍽️
+                    </div>
+
+                    <label>
+                        Food Habits
+                    </label>
+
+                    <p>
+                        Monthly food spending
+                    </p>
+
+                    <input
+                        type="number"
+                        id="food"
+                        placeholder="Example: 5000"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <!-- SHOPPING -->
+
+                <div class="input-card">
+
+                    <div class="icon">
+                        🛍️
+                    </div>
+
+                    <label>
+                        Shopping
+                    </label>
+
+                    <p>
+                        Monthly shopping/consumption
+                    </p>
+
+                    <input
+                        type="number"
+                        id="shopping"
+                        placeholder="Example: 5000"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <!-- HOME -->
+
+                <div class="input-card">
+
+                    <div class="icon">
+                        🏠
+                    </div>
+
+                    <label>
+                        Home Energy
+                    </label>
+
+                    <p>
+                        Approximate home energy usage
+                    </p>
+
+                    <input
+                        type="number"
+                        id="home_energy"
+                        placeholder="Example: 20"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <!-- TRAVEL -->
+
+                <div class="input-card">
+
+                    <div class="icon">
+                        ✈️
+                    </div>
+
+                    <label>
+                        Travel
+                    </label>
+
+                    <p>
+                        Flights/travel hours per month
+                    </p>
+
+                    <input
+                        type="number"
+                        id="travel"
+                        placeholder="Example: 5"
+                        min="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="calculate-btn"
+                onclick="calculateFootprint()"
+            >
+                🌍 Calculate My Carbon Footprint
+            </button>
+
+        </section>
+
+
+        
+        <!-- BREAKDOWN -->
+
+        <section class="card" id="breakdownSection">
+
+            <h2>
+                📊 Carbon Breakdown
+            </h2>
+
+            <div id="breakdown">
+
+                Calculate your footprint to see the breakdown.
+
+            </div>
+            </section>
+            <!-- =====================================================
+     ECOWEATHER
+===================================================== -->
+
+<section class="card ecoweather-section" id="ecoweatherSection">
+
+    <div class="weather-header">
+        <div>
+            <h2>🌦️ EcoWeather</h2>
+            <p>Weather-based environmental insights for today.</p>
+        </div>
+
+        <div id="weatherLocation">
+            📍 Detecting location...
+        </div>
+    </div>
+
+    <div class="weather-main">
+
+        <div class="weather-temperature">
+            <div id="weatherIcon">🌤️</div>
+            <div>
+                <span id="weatherTemp">--°C</span>
+                <p id="weatherCondition">Loading weather...</p>
+            </div>
+        </div>
+
+        <div class="weather-details">
+
+            <div class="weather-detail">
+                💧
+                <span>
+                    Humidity
+                    <strong id="weatherHumidity">--%</strong>
+                </span>
+            </div>
+
+            <div class="weather-detail">
+                🌧️
+                <span>
+                    Rain
+                    <strong id="weatherRain">--%</strong>
+                </span>
+            </div>
+
+            <div class="weather-detail">
+                💨
+                <span>
+                    Wind
+                    <strong id="weatherWind">-- km/h</strong>
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ECO IMPACT -->
+
+    <div class="eco-weather-impact">
+
+        <h3>🌱 Today's Eco Impact</h3>
+
+        <div class="eco-insight-grid">
+
+            <div class="eco-insight">
+                <div>🚲</div>
+                <div>
+                    <h4>Green Travel</h4>
+                    <p id="greenTravelTip">
+                        Checking today's weather...
+                    </p>
+                </div>
+            </div>
+
+            <div class="eco-insight">
+                <div>💧</div>
+                <div>
+                    <h4>Water Saving</h4>
+                    <p id="waterSavingTip">
+                        Checking rainfall conditions...
+                    </p>
+                </div>
+            </div>
+
+            <div class="eco-insight">
+                <div>⚡</div>
+                <div>
+                    <h4>Energy Saving</h4>
+                    <p id="energySavingTip">
+                        Checking temperature conditions...
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ECO OPPORTUNITY -->
+
+    <div class="eco-opportunity">
+
+        <div>
+            <h3>⭐ Eco Opportunity</h3>
+
+            <p id="ecoOpportunityText">
+                Calculating today's eco opportunity...
+            </p>
+        </div>
+
+        <div class="eco-opportunity-score">
+            <span id="ecoOpportunityScore">--</span>
+            <small>/100</small>
+        </div>
+
+    </div>
+
+
+    <!-- BEST ACTION -->
+
+    <div class="best-eco-action">
+
+        <div class="action-icon">
+            🌱
+        </div>
+
+        <div class="action-content">
+            <h3>Best Eco Action Today</h3>
+
+            <p id="bestEcoAction">
+                Preparing your personalized eco action...
+            </p>
+        </div>
+
+        <div class="eco-points">
+            <strong>+5</strong>
+            <span>EcoPoints</span>
+        </div>
+
+    </div>
+
+</section>
+<!-- =====================================================
+     7-DAY ECO FORECAST
+===================================================== -->
+
+<section class="card eco-forecast-section" id="ecoForecastSection">
+
+    <div class="forecast-header">
+        <div>
+            <h2>📅 7-Day Eco Forecast</h2>
+            <p>Plan greener actions using the weather forecast.</p>
+        </div>
+
+        <div class="forecast-location" id="forecastLocation">
+            📍 Detecting location...
+        </div>
+    </div>
+
+    <div id="ecoForecastGrid" class="eco-forecast-grid">
+
+        <div class="forecast-loading">
+            🌱 Preparing your 7-day eco forecast...
+        </div>
+
+    </div>
+
+</section>
+
+
+    </main>
+
+
+     <!-- ECO SCORE SYSTEM -->
+
+<!-- =========================
+     ECO SCORE SECTION
+========================= -->
+
+<section class="eco-score">
+
+    <div class="eco-score-header">
+        <h2>🌱 Eco Score</h2>
+        <p>Measure your environmental impact and improve your daily habits.</p>
+    </div>
+
+
+    <!-- ENERGY -->
+
+    <div class="eco-category">
+
+        <div class="category-header">
+            <span>⚡ Energy</span>
+            <strong id="energyScore">0/25</strong>
+        </div>
+
+        <div class="progress-track">
+            <div
+                id="energyProgress"
+                class="progress-fill"
+                style="width: 0%;"
+            ></div>
+        </div>
+
+    </div>
+
+
+    <!-- WATER -->
+
+    <div class="eco-category">
+
+        <div class="category-header">
+            <span>💧 Water</span>
+            <strong id="waterScore">0/25</strong>
+        </div>
+
+        <div class="progress-track">
+            <div
+                id="waterProgress"
+                class="progress-fill"
+                style="width: 0%;"
+            ></div>
+        </div>
+
+    </div>
+
+
+    <!-- TRANSPORT -->
+
+    <div class="eco-category">
+
+        <div class="category-header">
+            <span>🚗 Transport</span>
+            <strong id="transportScore">0/25</strong>
+        </div>
+
+        <div class="progress-track">
+            <div
+                id="transportProgress"
+                class="progress-fill"
+                style="width: 0%;"
+            ></div>
+        </div>
+
+    </div>
+
+
+    <!-- WASTE -->
+
+    <div class="eco-category">
+
+        <div class="category-header">
+            <span>♻️ Waste</span>
+            <strong id="wasteScore">0/25</strong>
+        </div>
+
+        <div class="progress-track">
+            <div
+                id="wasteProgress"
+                class="progress-fill"
+                style="width: 0%;"
+            ></div>
+        </div>
+
+    </div>
+
+
+    <!-- INPUTS -->
+
+    <div class="eco-input-grid">
+
+        <div class="eco-input">
+
+            <label>⚡ Monthly Electricity</label>
+
+            <input
+                type="number"
+                id="ecoElectricity"
+                min="0"
+                placeholder="kWh"
+            >
+
+        </div>
+
+
+        <div class="eco-input">
+
+            <label>💧 Daily Water Usage</label>
+
+            <input
+                type="number"
+                id="ecoWater"
+                min="0"
+                placeholder="Litres"
+            >
+
+        </div>
+
+
+        <div class="eco-input">
+
+            <label>🚗 Daily Travel</label>
+
+            <input
+                type="number"
+                id="ecoTransport"
+                min="0"
+                placeholder="km"
+            >
+
+        </div>
+
+
+        <div class="eco-input">
+
+            <label>♻️ Daily Waste</label>
+
+            <input
+                type="number"
+                id="ecoWaste"
+                min="0"
+                step="0.1"
+                placeholder="kg"
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- CALCULATE BUTTON -->
+
+    <button
+        type="button"
+        class="eco-calculate-btn"
+        onclick="calculateEcoScore()"
+    >
+        🌱 Calculate Eco Score
+    </button>
+
+
+    <!-- =========================
+         RESULT — BUTTON KE JUST BELOW
+    ========================= -->
+
+    <div
+        id="ecoScoreResult"
+        style="
+            display:none;
+            margin-top:20px;
+            padding:30px;
+            background:#effff4;
+            border:2px solid #9be7b5;
+            border-radius:20px;
+            text-align:center;
+        "
+    >
+
+        <div
+            style="
+                font-size:22px;
+                font-weight:700;
+                margin-bottom:10px;
+            "
+        >
+            🌱 Your Eco Score
+        </div>
+
+
+        <div
+            style="
+                font-size:56px;
+                font-weight:800;
+                color:#07883f;
+                line-height:1;
+            "
+        >
+            <span id="finalEcoScore">0</span>
+            <span
+                style="
+                    font-size:24px;
+                    color:#555;
+                    font-weight:500;
+                "
+            >
+                /100
+            </span>
+        </div>
+
+
+        <div
+            id="finalEcoLevel"
+            style="
+                margin-top:15px;
+                font-size:20px;
+                font-weight:700;
+            "
+        >
+            Calculate your score
+        </div>
+
+
+        <div
+            id="ecoScoreMessage"
+            style="
+                margin-top:15px;
+                font-size:16px;
+            "
+        ></div>
+
+
+        <div
+            id="ecoTip"
+            style="
+                margin-top:10px;
+                font-size:15px;
+            "
+        ></div>
+
+    </div>
+
+</section>
+<!-- ==============================
+     ECO DASHBOARD
+============================== -->
+
+<section class="eco-dashboard" id="ecoDashboard">
+
+    <div class="dashboard-title">
+        <h2>🌍 Your Eco Dashboard</h2>
+        <p>Your environmental performance at a glance.</p>
+    </div>
+
+
+    <!-- ECO SCORE -->
+    <div class="dashboard-main-card">
+
+        <div class="dashboard-icon">
+            🌱
+        </div>
+
+        <div>
+            <h3>Eco Score</h3>
+
+            <div class="dashboard-score">
+                <span id="dashboardScore">0</span>
+                <small>/100</small>
+            </div>
+
+            <p id="dashboardLevel">
+                Calculate your score
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- ECOPOINTS -->
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">
+            ⭐
+        </div>
+
+        <div>
+            <h3>EcoPoints</h3>
+
+            <strong id="dashboardPoints">
+                0
+            </strong>
+
+            <p>
+                Points earned from your eco performance
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- TRANSPORT IMPACT -->
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">
+            🚗
+        </div>
+
+        <div>
+            <h3>Transport Impact</h3>
+
+            <strong id="dashboardTransport">
+                No Data
+            </strong>
+
+            <div class="dashboard-progress">
+                <div id="transportImpactBar"></div>
+            </div>
+
+            <p>
+                Based on your daily travel
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- ELECTRICITY IMPACT -->
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">
+            ⚡
+        </div>
+
+        <div>
+            <h3>Electricity Impact</h3>
+
+            <strong id="dashboardElectricity">
+                No Data
+            </strong>
+
+            <div class="dashboard-progress">
+                <div id="electricityImpactBar"></div>
+            </div>
+
+            <p>
+                Based on your electricity usage
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- WATER IMPACT -->
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">
+            💧
+        </div>
+
+        <div>
+            <h3>Water Impact</h3>
+
+            <strong id="dashboardWater">
+                No Data
+            </strong>
+
+            <div class="dashboard-progress">
+                <div id="waterImpactBar"></div>
+            </div>
+
+            <p>
+                Based on your water consumption
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- WASTE IMPACT -->
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">
+            ♻️
+        </div>
+
+        <div>
+            <h3>Waste Impact</h3>
+
+            <strong id="dashboardWaste">
+                No Data
+            </strong>
+
+            <div class="dashboard-progress">
+                <div id="wasteImpactBar"></div>
+            </div>
+
+            <p>
+                Based on your daily waste
+            </p>
+        </div>
+
+    </div>
+
+</section>
+</section>
+<!-- =====================================================
+     AI ECO RECOMMENDATIONS
+===================================================== -->
+
+<section class="card ai-recommendations-section">
+
+    <div class="ai-recommendation-header">
+
+        <div>
+            <h2>🤖 AI Eco Recommendations</h2>
+
+            <p>
+                Personalized recommendations based on your Eco Score
+                and everyday activities.
+            </p>
+        </div>
+
+        <div class="ai-status">
+            ✨ Personalized for You
+        </div>
+
+    </div>
+
+    <div class="ai-recommendation-summary">
+
+        <div class="ai-summary-icon">
+            🌱
+        </div>
+
+        <div>
+            <strong id="aiRecommendationScore">—</strong>
+            <span>/100 Eco Score</span>
+
+            <p id="aiRecommendationOverview">
+                Calculate your Eco Score to receive personalized recommendations.
+            </p>
+        </div>
+
+    </div>
+
+    <div id="recommendations">
+
+        <div class="empty">
+            Calculate your footprint to receive personalized AI recommendations.
+        </div>
+
+    </div>
+
+</section>
+<!-- =====================================================
+     GAMIFICATION
+===================================================== -->
+
+<section class="gamification-section">
+
+    <div class="gamification-header">
+
+        <h2>🎮 Eco Gamification</h2>
+
+        <p>
+            Complete eco challenges, earn points and level up!
+        </p>
+
+    </div>
+
+
+    <!-- PLAYER LEVEL -->
+
+    <div class="gamification-level-card">
+
+        <div class="level-icon">
+            🏆
+        </div>
+
+        <div class="level-info">
+
+            <span>Your Eco Level</span>
+
+            <h3 id="gameLevel">
+                Eco Beginner
+            </h3>
+
+            <div class="xp-text">
+                <strong id="gameXP">0</strong>
+                XP
+                /
+                <span id="gameNextXP">100</span>
+                XP
+            </div>
+
+            <div class="xp-bar">
+                <div id="gameXPBar"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="game-stats">
+
+        <div class="game-stat-card">
+
+            <div class="game-stat-icon">
+                ⭐
+            </div>
+
+            <strong id="gamePoints">
+                0
+            </strong>
+
+            <span>EcoPoints</span>
+
+        </div>
+
+
+        <div class="game-stat-card">
+
+            <div class="game-stat-icon">
+                🔥
+            </div>
+
+            <strong id="gameStreak">
+                0
+            </strong>
+
+            <span>Day Streak</span>
+
+        </div>
+
+
+        <div class="game-stat-card">
+
+            <div class="game-stat-icon">
+                🏅
+            </div>
+
+            <strong id="gameBadges">
+                0
+            </strong>
+
+            <span>Badges</span>
+
+        </div>
+
+    </div>
+
+
+    <!-- CHALLENGES -->
+
+    <div class="game-challenges">
+
+        <h3>🎯 Eco Challenges</h3>
+
+        <p>
+            Complete challenges to earn EcoPoints.
+        </p>
+
+
+        <div class="game-challenge-grid">
+
+
+            <div class="game-challenge-card">
+
+                <div class="challenge-icon">
+                    🚲
+                </div>
+
+                <div class="challenge-content">
+
+                    <h4>No Car Day</h4>
+
+                    <p>
+                        Avoid unnecessary car travel today.
+                    </p>
+
+                    <span>
+                        +20 XP
+                    </span>
+
+                </div>
+
+                <button
+                    onclick="completeChallenge('car')"
+                    id="challenge-car"
+                >
+                    Complete
+                </button>
+
+            </div>
+
+
+            <div class="game-challenge-card">
+
+                <div class="challenge-icon">
+                    💡
+                </div>
+
+                <div class="challenge-content">
+
+                    <h4>Save Electricity</h4>
+
+                    <p>
+                        Switch off unused lights and appliances.
+                    </p>
+
+                    <span>
+                        +30 XP
+                    </span>
+
+                </div>
+
+                <button
+                    onclick="completeChallenge('energy')"
+                    id="challenge-energy"
+                >
+                    Complete
+                </button>
+
+            </div>
+
+
+            <div class="game-challenge-card">
+
+                <div class="challenge-icon">
+                    💧
+                </div>
+
+                <div class="challenge-content">
+
+                    <h4>Save Water</h4>
+
+                    <p>
+                        Reduce unnecessary water usage today.
+                    </p>
+
+                    <span>
+                        +25 XP
+                    </span>
+
+                </div>
+
+                <button
+                    onclick="completeChallenge('water')"
+                    id="challenge-water"
+                >
+                    Complete
+                </button>
+
+            </div>
+
+
+         <!-- RECYCLE MORE -->
+<div class="game-challenge-card">
+
+    <div class="challenge-icon">
+        ♻️
+    </div>
+
+    <div class="challenge-content">
+        <h4>Recycle More</h4>
+
+        <p>
+            Separate recyclable waste from regular waste.
+        </p>
+
+        <span>+35 XP</span>
+    </div>
+
+    <button
+        onclick="completeChallenge('recycle')"
+        id="challenge-recycle">
+        Complete
+    </button>
+
+</div>
+
+
+<!-- BEST ECO ACTION TODAY -->
+<div class="game-challenge-card">
+
+    <div class="challenge-icon">
+        🌱
+    </div>
+
+    <div class="challenge-content">
+        <strong>Best Eco Action Today</strong>
+
+        <p id="bestEcoActionChallenge">
+            Complete today's recommended eco action.
+        </p>
+
+        <span>+5 XP</span>
+    </div>
+
+    <button
+        id="challenge-bestAction"
+        onclick="completeChallenge('bestAction')">
+        Complete
+    </button>
+
+</div>
+</div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BADGES -->
+
+    <div class="badges-area">
+
+        <h3>🏅 Your Badges</h3>
+
+        <div id="badgeContainer" class="badge-container">
+
+            <div class="locked-badge">
+                🔒
+                <span>First Step</span>
+            </div>
+
+            <div class="locked-badge">
+                🔒
+                <span>Eco Warrior</span>
+            </div>
+
+            <div class="locked-badge">
+                🔒
+                <span>Green Hero</span>
+            </div>
+
+            <div class="locked-badge">
+                🔒
+                <span>Planet Champion</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =====================================================
+     WEEKLY PROGRESS
+===================================================== -->
+
+<section class="weekly-progress-section">
+
+    <div class="section-heading">
+
+        <h2>📈 Weekly Progress</h2>
+
+        <p>
+            Track how your Eco Score changes over time.
+        </p>
+
+    </div>
+
+    <div class="weekly-card">
+
+        <div class="weekly-chart-box">
+
+            <canvas id="weeklyProgressChart"></canvas>
+
+        </div>
+
+        <div class="weekly-score-box">
+
+            <span>This Week's Average</span>
+
+            <div>
+                <strong id="weeklyAverageScore">
+                    0
+                </strong>
+
+                <small>/100</small>
+            </div>
+
+            <p id="weeklyProgressMessage">
+                🌱 Keep improving your eco habits!
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- =====================================================
+     CARBON FOOTPRINT HISTORY
+===================================================== -->
+
+<section class="carbon-history-section">
+
+    <div class="section-heading">
+
+        <h2>📊 Environmental History</h2>
+
+        <p>
+            Track your Carbon Footprint and Eco Score over time.
+        </p>
+
+    </div>
+
+
+    <div class="carbon-history-card">
+
+        <div class="history-header">
+
+            <div>
+                <h3>🌍 Your Environmental Journey</h3>
+
+                <p>
+                    Compare your Carbon Footprint and Eco Score
+                    from previous calculations.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div id="environmentalHistory">
+
+            <div class="history-empty">
+
+                🌱 Calculate your Carbon Footprint or Eco Score
+                to start building your history.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<script>
+
+function toggleHeaderMenu() {
+
+    const menu = document.getElementById("headerDropdown");
+
+    if (!menu) return;
+
+    menu.classList.toggle("show");
+
+}
+
+
+document.addEventListener("click", function(event) {
+
+    const menuContainer = document.querySelector(".header-menu");
+    const dropdown = document.getElementById("headerDropdown");
+
+    if (!menuContainer || !dropdown) return;
+
+    if (!menuContainer.contains(event.target)) {
+
+        dropdown.classList.remove("show");
+
+    }
+
+});
+
+</script>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", async function () {
+
+    const loggedOutArea =
+        document.getElementById("loggedOutArea");
+
+    const loggedInArea =
+        document.getElementById("loggedInArea");
+
+    const navUserName =
+        document.getElementById("navUserName");
+
+    const userMenuButton =
+        document.getElementById("userMenuButton");
+
+    const userDropdown =
+        document.getElementById("userDropdown");
+
+
+    try {
+
+        const response = await fetch("/api/auth/me");
+
+        const data = await response.json();
+
+
+        if (data.logged_in) {
+
+            loggedOutArea.style.display = "none";
+            loggedInArea.style.display = "block";
+
+            navUserName.textContent =
+                data.user.name;
+
+        } else {
+
+            loggedOutArea.style.display = "flex";
+            loggedInArea.style.display = "none";
+
+        }
+
+    } catch (error) {
+
+        console.error("Auth check failed:", error);
+
+        loggedOutArea.style.display = "flex";
+        loggedInArea.style.display = "none";
+
+    }
+
+
+    if (userMenuButton) {
+
+        userMenuButton.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+            userDropdown.classList.toggle("show");
+
+        });
+
+    }
+
+
+    document.addEventListener("click", function () {
+
+        if (userDropdown) {
+            userDropdown.classList.remove("show");
+        }
+
+    });
+
+});
+</script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const userMenuButton = document.getElementById("userMenuButton");
+    const userDropdown = document.getElementById("userDropdown");
+
+    const loggedOutArea = document.getElementById("loggedOutArea");
+    const loggedInArea = document.getElementById("loggedInArea");
+    const navUserName = document.getElementById("navUserName");
+
+
+    // ==============================
+    // CHECK LOGIN STATUS
+    // ==============================
+
+    fetch("/api/auth/me")
+        .then(response => response.json())
+        .then(data => {
+
+            if (data.logged_in) {
+
+                loggedOutArea.style.display = "none";
+                loggedInArea.style.display = "block";
+
+                navUserName.textContent = data.user.name;
+
+            } else {
+
+                loggedOutArea.style.display = "flex";
+                loggedInArea.style.display = "none";
+
+            }
+
+        })
+        .catch(error => {
+            console.error("Login check error:", error);
+        });
+
+
+    // ==============================
+    // USER NAME BUTTON
+    // ==============================
+
+    if (userMenuButton && userDropdown) {
+
+        userMenuButton.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            userDropdown.classList.toggle("show");
+
+        });
+
+
+        // ==============================
+        // CLOSE WHEN CLICKING OUTSIDE
+        // ==============================
+
+        document.addEventListener("click", function (event) {
+
+            if (
+                !userMenuButton.contains(event.target) &&
+                !userDropdown.contains(event.target)
+            ) {
+                userDropdown.classList.remove("show");
+            }
+
+        });
+
+    }
+
+});
+</script>
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register - EcoTrack</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="auth-page">
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                🌱
+            </div>
+
+            <h1>Create Your EcoTrack Account</h1>
+
+            <p class="auth-subtitle">
+                Start tracking your environmental impact.
+            </p>
+
+            <form id="registerForm">
+
+                <div class="auth-input-group">
+                    <label>Full Name</label>
+                    <input
+                        type="text"
+                        id="registerName"
+                        placeholder="Enter your full name"
+                        required
+                    >
+                </div>
+
+                <div class="auth-input-group">
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        id="registerEmail"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="auth-input-group">
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        id="registerPassword"
+                        placeholder="Create a password"
+                        required
+                    >
+                </div>
+
+                <div class="auth-input-group">
+                    <label>Confirm Password</label>
+                    <input
+                        type="password"
+                        id="registerConfirmPassword"
+                        placeholder="Confirm your password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="auth-button">
+                    Create Account
+                </button>
+
+            </form>
+
+            <div id="registerMessage" class="auth-message"></div>
+
+            <p class="auth-switch">
+                Already have an account?
+                <a href="{{ url_for('login_page') }}">Login</a>
+            </p>
+
+            <a href="{{ url_for('home') }}" class="back-home">
+                ← Back to EcoTrack
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        document.getElementById("registerForm").addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const name =
+                document.getElementById("registerName").value.trim();
+
+            const email =
+                document.getElementById("registerEmail").value.trim();
+
+            const password =
+                document.getElementById("registerPassword").value;
+
+            const confirmPassword =
+                document.getElementById("registerConfirmPassword").value;
+
+            const message =
+                document.getElementById("registerMessage");
+
+            message.textContent = "Creating your account...";
+            message.className = "auth-message";
+
+            try {
+
+                const response = await fetch("/api/register", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        password: password,
+                        confirm_password: confirmPassword
+                    })
+
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+
+                    message.textContent =
+                        "✅ Account created successfully!";
+
+                    message.className =
+                        "auth-message success";
+
+                    setTimeout(function() {
+
+                        window.location.href = "/";
+
+                    }, 800);
+
+                } else {
+
+                    message.textContent =
+                        "❌ " + result.message;
+
+                    message.className =
+                        "auth-message error";
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "❌ Something went wrong. Please try again.";
+
+                message.className =
+                    "auth-message error";
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

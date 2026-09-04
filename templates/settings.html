@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Account Settings - EcoTrack</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="auth-page">
+
+        <div class="auth-card settings-card">
+
+            <div class="auth-logo">
+                ⚙️
+            </div>
+
+            <h1>Account Settings</h1>
+
+            <p class="auth-subtitle">
+                Manage your EcoTrack account
+            </p>
+
+
+            <!-- ACCOUNT INFORMATION -->
+
+            <div class="settings-section">
+
+                <h3>👤 Account Information</h3>
+
+                <div class="settings-row">
+                    <span>Name</span>
+                    <strong id="settingsName">Loading...</strong>
+                </div>
+
+                <div class="settings-row">
+                    <span>Email</span>
+                    <strong id="settingsEmail">Loading...</strong>
+                </div>
+
+            </div>
+
+
+            <!-- SECURITY -->
+
+            <div class="settings-section">
+
+                <h3>🔐 Security</h3>
+
+                <a href="/login" class="settings-action">
+                    🔑 Login Again
+                </a>
+
+            </div>
+
+
+            <!-- LOGOUT -->
+
+            <div class="settings-section">
+
+                <h3>🚪 Account</h3>
+
+                <a href="/logout" class="settings-action logout-setting">
+                    🚪 Logout
+                </a>
+
+            </div>
+
+
+            <a href="/" class="back-home">
+                ← Back to EcoTrack
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        async function loadSettings() {
+
+            try {
+
+                const response = await fetch("/api/auth/me");
+                const data = await response.json();
+
+                if (!data.logged_in) {
+
+                    window.location.href = "/login";
+                    return;
+
+                }
+
+                document.getElementById("settingsName").textContent =
+                    data.user.name || "User";
+
+                document.getElementById("settingsEmail").textContent =
+                    data.user.email || "Not available";
+
+            } catch (error) {
+
+                console.error("Settings loading error:", error);
+
+            }
+
+        }
+
+        loadSettings();
+
+    </script>
+
+</body>
+
+</html>

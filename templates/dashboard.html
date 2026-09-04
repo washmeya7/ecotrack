@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EcoTrack Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- HEADER -->
+        <header class="dashboard-header">
+
+            <div>
+                <h1>🌱 EcoTrack</h1>
+                <p>Your Environmental Dashboard</p>
+            </div>
+
+            <a href="/" class="back-btn">
+                ← Calculator
+            </a>
+
+        </header>
+
+
+        <!-- WELCOME -->
+        <section class="welcome-card">
+
+            <h2>Welcome to your Eco Dashboard 🌍</h2>
+
+            <p>
+                Track your environmental performance and
+                improve your everyday habits.
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             1. ECO SCORE
+        ========================== -->
+
+        <section class="dashboard-card eco-score-main">
+
+            <div class="card-icon">🌱</div>
+
+            <div class="card-content">
+
+                <h2>Eco Score</h2>
+
+                <div class="big-score">
+                    <span id="dashboardEcoScore">0</span>
+                    <small>/100</small>
+                </div>
+
+                <p id="dashboardEcoLevel">
+                    Calculate your Eco Score
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             2. ECOPOINTS
+        ========================== -->
+
+        <section class="dashboard-card">
+
+            <div class="card-icon">⭐</div>
+
+            <div class="card-content">
+
+                <h2>EcoPoints</h2>
+
+                <div class="impact-value">
+                    <span id="ecoPoints">0</span>
+                </div>
+
+                <p>
+                    Points earned from your eco-friendly actions
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             3. TRANSPORT IMPACT
+        ========================== -->
+
+        <section class="dashboard-card">
+
+            <div class="card-icon">🚗</div>
+
+            <div class="card-content">
+
+                <h2>Transport Impact</h2>
+
+                <div class="impact-value"
+                     id="transportImpact">
+                    No Data
+                </div>
+
+                <div class="impact-bar">
+                    <div id="transportBar"></div>
+                </div>
+
+                <p>
+                    Based on your daily transportation
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             4. ELECTRICITY IMPACT
+        ========================== -->
+
+        <section class="dashboard-card">
+
+            <div class="card-icon">⚡</div>
+
+            <div class="card-content">
+
+                <h2>Electricity Impact</h2>
+
+                <div class="impact-value"
+                     id="electricityImpact">
+                    No Data
+                </div>
+
+                <div class="impact-bar">
+                    <div id="electricityBar"></div>
+                </div>
+
+                <p>
+                    Based on your monthly electricity usage
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             5. WATER IMPACT
+        ========================== -->
+
+        <section class="dashboard-card">
+
+            <div class="card-icon">💧</div>
+
+            <div class="card-content">
+
+                <h2>Water Impact</h2>
+
+                <div class="impact-value"
+                     id="waterImpact">
+                    No Data
+                </div>
+
+                <div class="impact-bar">
+                    <div id="waterBar"></div>
+                </div>
+
+                <p>
+                    Based on your daily water consumption
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             6. WASTE IMPACT
+        ========================== -->
+
+        <section class="dashboard-card">
+
+            <div class="card-icon">♻️</div>
+
+            <div class="card-content">
+
+                <h2>Waste Impact</h2>
+
+                <div class="impact-value"
+                     id="wasteImpact">
+                    No Data
+                </div>
+
+                <div class="impact-bar">
+                    <div id="wasteBar"></div>
+                </div>
+
+                <p>
+                    Based on your daily waste production
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            <p>
+                🌍 Small actions today create a greener tomorrow.
+            </p>
+
+        </footer>
+
+    </div>
+
+
+    <!-- DASHBOARD JAVASCRIPT -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const saved =
+                localStorage.getItem("ecotrack_last_result");
+
+            if (!saved) {
+                return;
+            }
+
+            try {
+
+                const data = JSON.parse(saved);
+
+
+                /* =========================
+                   ECO SCORE
+                ========================== */
+
+                const score =
+                    Number(data.ecoScore) || 0;
+
+                document.getElementById(
+                    "dashboardEcoScore"
+                ).textContent = score;
+
+
+                let level = "";
+
+                if (score >= 80) {
+
+                    level = "🌿 Excellent Eco Warrior";
+
+                } else if (score >= 60) {
+
+                    level = "🌱 Good Eco Citizen";
+
+                } else if (score >= 40) {
+
+                    level = "🌍 Getting Greener";
+
+                } else if (score >= 20) {
+
+                    level = "🌤️ Needs Improvement";
+
+                } else {
+
+                    level = "⚠️ High Environmental Impact";
+
+                }
+
+                document.getElementById(
+                    "dashboardEcoLevel"
+                ).textContent = level;
+
+
+                /* =========================
+                   ECOPOINTS
+                ========================== */
+
+                const points = score * 10;
+
+                document.getElementById(
+                    "ecoPoints"
+                ).textContent = points;
+
+
+                /* =========================
+                   TRANSPORT
+                ========================== */
+
+                setImpact(
+                    data.transportation,
+                    "transportImpact",
+                    "transportBar"
+                );
+
+
+                /* =========================
+                   ELECTRICITY
+                ========================== */
+
+                setImpact(
+                    data.electricity,
+                    "electricityImpact",
+                    "electricityBar"
+                );
+
+
+                /* =========================
+                   WATER
+                ========================== */
+
+                setImpact(
+                    data.water,
+                    "waterImpact",
+                    "waterBar"
+                );
+
+
+                /* =========================
+                   WASTE
+                ========================== */
+
+                setImpact(
+                    data.waste,
+                    "wasteImpact",
+                    "wasteBar"
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Dashboard data error:",
+                    error
+                );
+
+            }
+
+        });
+
+
+        function setImpact(value, textId, barId) {
+
+            const amount =
+                Number(value) || 0;
+
+            const text =
+                document.getElementById(textId);
+
+            const bar =
+                document.getElementById(barId);
+
+
+            if (amount === 0) {
+
+                text.textContent = "Low Impact";
+
+                bar.style.width = "20%";
+
+            }
+
+            else if (amount <= 100) {
+
+                text.textContent = "Low Impact";
+
+                bar.style.width = "35%";
+
+            }
+
+            else if (amount <= 200) {
+
+                text.textContent = "Medium Impact";
+
+                bar.style.width = "65%";
+
+            }
+
+            else {
+
+                text.textContent = "High Impact";
+
+                bar.style.width = "90%";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

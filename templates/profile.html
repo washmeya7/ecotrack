@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile - EcoTrack</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="auth-page">
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                👤
+            </div>
+
+            <h1>My Profile</h1>
+
+            <p class="auth-subtitle">
+                Your EcoTrack account information
+            </p>
+
+            <div class="profile-info">
+
+                <div class="profile-row">
+                    <span>👤 Name</span>
+                    <strong id="profileName">Loading...</strong>
+                </div>
+
+                <div class="profile-row">
+                    <span>📧 Email</span>
+                    <strong id="profileEmail">Loading...</strong>
+                </div>
+
+                <div class="profile-row">
+                    <span>🌱 EcoPoints</span>
+                    <strong id="profilePoints">0</strong>
+                </div>
+
+                <div class="profile-row">
+                    <span>🌍 Eco Score</span>
+                    <strong id="profileScore">0/100</strong>
+                </div>
+
+            </div>
+
+            <a href="/" class="back-home">
+                ← Back to EcoTrack
+            </a>
+
+        </div>
+
+    </div>
+
+
+   <script>
+
+async function loadProfile() {
+
+    try {
+
+        const response = await fetch("/api/auth/me");
+        const data = await response.json();
+
+        if (!data.logged_in) {
+            window.location.href = "/login";
+            return;
+        }
+
+        // NAME
+        document.getElementById("profileName").textContent =
+            data.user.name || "User";
+
+        // EMAIL
+        document.getElementById("profileEmail").textContent =
+            data.user.email || "Not available";
+
+
+        // ECO SCORE FROM EXISTING ECOTRACK DATA
+        let ecoScore = 0;
+
+        try {
+
+            const savedScore =
+                JSON.parse(
+                    localStorage.getItem("ecotrack_eco_score") || "null"
+                );
+
+            if (savedScore && savedScore.ecoScore !== undefined) {
+                ecoScore = Math.round(Number(savedScore.ecoScore));
+            }
+
+        } catch (error) {
+
+            console.warn("Could not load Eco Score:", error);
+
+        }
+
+        document.getElementById("profileScore").textContent =
+            ecoScore + "/100";
+
+
+        // ECOPoints
+        const savedPoints =
+            localStorage.getItem("ecotrack_ecopoints");
+
+        if (savedPoints !== null) {
+
+            document.getElementById("profilePoints").textContent =
+                Number(savedPoints);
+
+        } else {
+
+            document.getElementById("profilePoints").textContent =
+                data.user.eco_points || 0;
+
+        }
+
+    } catch (error) {
+
+        console.error("Profile loading error:", error);
+
+    }
+
+}
+
+loadProfile();
+
+</script>
+
+</body>
+
+</html>
