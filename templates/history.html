@@ -1,184 +1,69 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>My Eco History - EcoTrack</title>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-
     <div class="auth-page">
-
         <div class="auth-card history-card">
-
-            <div class="auth-logo">
-                📈
-            </div>
-
+            <div class="auth-logo">📈</div>
             <h1>My Eco History</h1>
-
-            <p class="auth-subtitle">
-                Track your environmental progress
-            </p>
-
-
+            <p class="auth-subtitle">Track your environmental progress</p>
             <div id="historyContent">
-
-                <div class="history-empty">
-                    🌱 Your EcoTrack history will appear here.
-                </div>
-
+                <div class="history-empty">🌱 Your EcoTrack history will appear here.</div>
             </div>
-
-
-            <a href="/" class="back-home">
-                ← Back to EcoTrack
-            </a>
-
+            <a href="/" class="back-home">← Back to EcoTrack</a>
         </div>
-
     </div>
 
-
-  <script>
-
+    <script>
     async function loadHistory() {
-
-        const historyContent =
-            document.getElementById("historyContent");
-
-        historyContent.innerHTML = `
-            <div class="history-empty">
-                ⏳ Loading your Eco History...
-            </div>
-        `;
+        const historyContent = document.getElementById("historyContent");
+        historyContent.innerHTML = `<div class="history-empty">⏳ Loading your Eco History...</div>`;
 
         try {
-
-            const response =
-                await fetch("/api/eco-history");
-
-            const data =
-                await response.json();
+            const response = await fetch("/api/eco-history");
+            const data = await response.json();
 
             if (!data.success) {
-
-                historyContent.innerHTML = `
-                    <div class="history-empty">
-                        🌱 Unable to load Eco History.
-                    </div>
-                `;
-
+                historyContent.innerHTML = `<div class="history-empty">🌱 Unable to load Eco History.</div>`;
                 return;
             }
 
-            const history =
-                Array.isArray(data.history)
-                    ? data.history
-                    : [];
-
+            const history = Array.isArray(data.history) ? data.history : [];
 
             if (history.length === 0) {
-
-                historyContent.innerHTML = `
-                    <div class="history-empty">
-                        🌱 No Eco History yet.<br>
-                        Calculate your Eco Score or Carbon Footprint
-                        from the EcoTrack home page.
-                    </div>
-                `;
-
+                historyContent.innerHTML = `<div class="history-empty">🌱 No Eco History yet.<br>Calculate your Eco Score or Carbon Footprint from the EcoTrack home page.</div>`;
                 return;
             }
 
+            historyContent.innerHTML = history.map(item => {
+                const date = item.date || "Unknown date";
+                const carbon = item.carbon !== null && item.carbon !== undefined
+                    ? Number(item.carbon).toFixed(2) + " kg" : "—";
+                const rawScore = item.eco_score ?? item.ecoScore;
+                const score = rawScore !== null && rawScore !== undefined && rawScore !== ""
+                    ? Math.round(Number(rawScore)) + "/100" : "—";
 
-            historyContent.innerHTML =
-                history.map(item => {
-
-                    const date =
-                        item.date || "Unknown date";
-
-
-                    const carbon =
-                        item.carbon !== null &&
-                        item.carbon !== undefined
-                            ? Number(item.carbon).toFixed(2) + " kg"
-                            : "—";
-
-
-                    const score =
-                        item.ecoScore !== null &&
-                        item.ecoScore !== undefined
-                            ? Math.round(
-                                Number(item.ecoScore)
-                              ) + "/100"
-                            : "—";
-
-
-                    return `
-                        <div class="history-item">
-
-                            <div class="history-date">
-                                📅 ${date}
-                            </div>
-
-                            <div class="history-values">
-
-                                <div>
-                                    <span>
-                                        🌍 Carbon Footprint
-                                    </span>
-
-                                    <strong>
-                                        ${carbon}
-                                    </strong>
-                                </div>
-
-
-                                <div>
-                                    <span>
-                                        🌱 Eco Score
-                                    </span>
-
-                                    <strong>
-                                        ${score}
-                                    </strong>
-                                </div>
-
-                            </div>
-
+                return `
+                    <div class="history-item">
+                        <div class="history-date">📅 ${date}</div>
+                        <div class="history-values">
+                            <div><span>🌍 Carbon Footprint</span><strong>${carbon}</strong></div>
+                            <div><span>🌱 Eco Score</span><strong>${score}</strong></div>
                         </div>
-                    `;
-
-                }).join("");
-
-
+                    </div>`;
+            }).join("");
         } catch (error) {
-
-            console.error(
-                "History loading error:",
-                error
-            );
-
-            historyContent.innerHTML = `
-                <div class="history-empty">
-                    ❌ Error loading Eco History.
-                </div>
-            `;
+            console.error("History loading error:", error);
+            historyContent.innerHTML = `<div class="history-empty">❌ Error loading Eco History.</div>`;
         }
-
     }
-
-
     loadHistory();
-
-</script>
-
+    </script>
+    <script src="{{ url_for('static', filename='dark-mode.js') }}"></script>
 </body>
-
 </html>

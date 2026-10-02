@@ -3,6 +3,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from zoneinfo import ZoneInfo
 import hashlib
 import os
 
@@ -72,6 +73,8 @@ def profile_page():
 
     return render_template("profile.html")
 # ==========================================
+
+# ==========================================
 # GET USER ECO HISTORY
 # ==========================================
 
@@ -93,34 +96,53 @@ def get_eco_history():
         .order_by("created_at", direction=firestore.Query.DESCENDING)
     )
 
-    docs = history_ref.stream()
+    grouped = {}
 
-    history = []
+    for doc in history_ref.stream():
+        item = doc.to_dict() or {}
+        created_at = item.get("created_at")
 
-    for doc in docs:
-
-        data = doc.to_dict()
-
-        created_at = data.get("created_at")
-
-        if created_at:
+        date_text = item.get("date")
+        if not date_text and created_at:
             date_text = created_at.strftime("%Y-%m-%d")
-        else:
+        if not date_text:
             date_text = "Unknown date"
 
-        history.append({
-            "date": date_text,
-            "carbon": data.get("carbon"),
-            "ecoScore": data.get("eco_score"),
-            "ecoPoints": data.get("eco_points")
-        })
+        if date_text not in grouped:
+            grouped[date_text] = {
+                "date": date_text,
+                "carbon": None,
+                "ecoScore": None,
+                "eco_score": None,
+                "ecoPoints": item.get("eco_points")
+            }
+
+        current = grouped[date_text]
+
+        # Newest non-empty values are retained; older records fill blanks.
+        carbon_value = item.get("carbon")
+        if current["carbon"] is None and carbon_value is not None:
+            current["carbon"] = carbon_value
+
+        score_value = item.get("eco_score", item.get("ecoScore"))
+        if current["ecoScore"] is None and score_value is not None:
+            current["ecoScore"] = score_value
+            current["eco_score"] = score_value
+
+        if current["ecoPoints"] is None and item.get("eco_points") is not None:
+            current["ecoPoints"] = item.get("eco_points")
+
+    history = sorted(
+        grouped.values(),
+        key=lambda row: row["date"],
+        reverse=True
+    )
 
     return jsonify({
         "success": True,
         "history": history
     })
 
-# ==========================================
 # HISTORY PAGE
 # ==========================================
 
@@ -412,6 +434,7 @@ def current_user():
 # SAVE USER ECO DATA
 # ==========================================
 
+
 @app.route("/api/save-eco-data", methods=["POST"])
 def save_eco_data():
 
@@ -422,60 +445,61 @@ def save_eco_data():
         }), 401
 
     data = request.get_json() or {}
+    user_id = session["user_id"]
 
-    user_id = session.get("user_id")
+    try:
+        eco_score = int(float(data.get("eco_score", 0) or 0))
+    except (ValueError, TypeError):
+        eco_score = 0
 
-    eco_score = int(data.get("eco_score", 0) or 0)
+    eco_score = max(0, min(100, eco_score))
 
     carbon = data.get("carbon")
-
-    if carbon is not None:
-        carbon = float(carbon)
-
-    # -------------------------------
-    # UPDATE ONLY ECO SCORE
-    # DO NOT CHANGE GAMIFICATION POINTS
-    # -------------------------------
+    try:
+        carbon = float(carbon) if carbon is not None else None
+    except (ValueError, TypeError):
+        carbon = None
 
     user_ref = db.collection("users").document(user_id)
+    user_ref.update({"eco_score": eco_score})
 
-    user_ref.update({
-        "eco_score": eco_score
-    })
-
-    # Get existing GAMIFICATION EcoPoints
     user_doc = user_ref.get()
     user_data = user_doc.to_dict() if user_doc.exists else {}
+    current_eco_points = int(user_data.get("eco_points", 0) or 0)
 
-    current_eco_points = int(
-        user_data.get("eco_points", 0) or 0
+    india_now = datetime.now(ZoneInfo("Asia/Kolkata"))
+    history_date = india_now.strftime("%Y-%m-%d")
+
+    history_ref = (
+        db.collection("users")
+        .document(user_id)
+        .collection("eco_history")
+        .document(history_date)
     )
 
-    # -------------------------------
-    # SAVE HISTORY
-    # -------------------------------
+    old_doc = history_ref.get()
+    old_data = old_doc.to_dict() if old_doc.exists else {}
 
-    history_ref = db.collection("users") \
-                    .document(user_id) \
-                    .collection("eco_history") \
-                    .document()
-    india_now = datetime.now(ZoneInfo("Asia/Kolkata"))
+    # Do not overwrite an existing carbon value with null.
+    if carbon is None:
+        carbon = old_data.get("carbon")
 
     history_ref.set({
+        "date": history_date,
         "eco_score": eco_score,
         "eco_points": current_eco_points,
         "carbon": carbon,
-        "created_at": firestore.SERVER_TIMESTAMP,
-        "date": india_now.strftime("%Y-%m-%d")
-    })
+        "created_at": firestore.SERVER_TIMESTAMP
+    }, merge=True)
 
     return jsonify({
         "success": True,
-        "message": "Eco data saved successfully!",
+        "message": "Eco data and history saved successfully!",
         "eco_score": eco_score,
-        "eco_points": current_eco_points
+        "eco_points": current_eco_points,
+        "carbon": carbon
     })
-# ==========================================
+
 # ADD GAMIFICATION ECOPOINTS
 # ==========================================
 
@@ -674,37 +698,37 @@ def recommendations():
 
     if transportation > 10:
         recommendations_list.append(
-            "🚆 Try public transport, cycling, walking, or carpooling."
+            "ðŸš† Try public transport, cycling, walking, or carpooling."
         )
 
     if electricity > 10:
         recommendations_list.append(
-            "💡 Reduce electricity usage and switch to energy-efficient appliances."
+            "ðŸ’¡ Reduce electricity usage and switch to energy-efficient appliances."
         )
 
     if food > 10:
         recommendations_list.append(
-            "🥗 Reduce food waste and include more plant-based meals."
+            "ðŸ¥— Reduce food waste and include more plant-based meals."
         )
 
     if shopping > 500:
         recommendations_list.append(
-            "🛍️ Reduce unnecessary purchases and choose reusable products."
+            "ðŸ›ï¸ Reduce unnecessary purchases and choose reusable products."
         )
 
     if home_energy > 10:
         recommendations_list.append(
-            "🏠 Improve home energy efficiency and avoid unnecessary heating/cooling."
+            "ðŸ  Improve home energy efficiency and avoid unnecessary heating/cooling."
         )
 
     if travel > 5:
         recommendations_list.append(
-            "✈️ Consider fewer flights or choose lower-carbon travel options."
+            "âœˆï¸ Consider fewer flights or choose lower-carbon travel options."
         )
 
     if not recommendations_list:
         recommendations_list.append(
-            "🌱 Great job! Your current habits look relatively eco-friendly."
+            "ðŸŒ± Great job! Your current habits look relatively eco-friendly."
         )
 
     return jsonify({
@@ -715,6 +739,7 @@ def recommendations():
 # ==========================================
 # SAVE USER ECO STATS + HISTORY
 # ==========================================
+
 
 @app.route("/api/user/stats", methods=["POST"])
 def save_user_stats():
@@ -727,10 +752,6 @@ def save_user_stats():
 
     data = request.get_json() or {}
 
-    # -------------------------------
-    # ECO SCORE
-    # -------------------------------
-
     try:
         eco_score = int(float(data.get("eco_score", 0) or 0))
     except (ValueError, TypeError):
@@ -738,66 +759,44 @@ def save_user_stats():
 
     eco_score = max(0, min(100, eco_score))
 
-    # -------------------------------
-    # CARBON
-    # -------------------------------
-
     carbon = data.get("carbon")
-
     try:
         carbon = float(carbon) if carbon is not None else None
     except (ValueError, TypeError):
         carbon = None
 
     user_id = session["user_id"]
-
     user_ref = db.collection("users").document(user_id)
 
-    # -------------------------------
-    # GET CURRENT USER DATA
-    # -------------------------------
-
     user_doc = user_ref.get()
+    user_data = user_doc.to_dict() if user_doc.exists else {}
+    current_eco_points = int(user_data.get("eco_points", 0) or 0)
 
-    user_data = (
-        user_doc.to_dict()
-        if user_doc.exists
-        else {}
-    )
+    user_ref.update({"eco_score": eco_score})
 
-    current_eco_points = int(
-        user_data.get("eco_points", 0) or 0
-    )
-
-    # -------------------------------
-    # UPDATE CURRENT ECO SCORE
-    # -------------------------------
-
-    user_ref.update({
-        "eco_score": eco_score
-    })
-
-    # -------------------------------
-    # SAVE ENVIRONMENTAL HISTORY
-    # -------------------------------
+    india_now = datetime.now(ZoneInfo("Asia/Kolkata"))
+    history_date = india_now.strftime("%Y-%m-%d")
 
     history_ref = (
         db.collection("users")
         .document(user_id)
         .collection("eco_history")
-        .document()
+        .document(history_date)
     )
 
+    old_doc = history_ref.get()
+    old_data = old_doc.to_dict() if old_doc.exists else {}
+
+    if carbon is None:
+        carbon = old_data.get("carbon")
+
     history_ref.set({
+        "date": history_date,
         "eco_score": eco_score,
         "eco_points": current_eco_points,
         "carbon": carbon,
         "created_at": firestore.SERVER_TIMESTAMP
-    })
-
-    # -------------------------------
-    # RESPONSE
-    # -------------------------------
+    }, merge=True)
 
     return jsonify({
         "success": True,
@@ -807,8 +806,6 @@ def save_user_stats():
         "message": "Eco stats and history saved successfully!"
     })
 
-
-# ==========================================
 # SERVER
 # ==========================================
 

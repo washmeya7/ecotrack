@@ -3889,3 +3889,736 @@ footer p {
         min-height: 220px;
     }
 }
+/* =========================================================
+   MOBILE HEADER MENU - FIX THREE DOTS POSITION
+   ========================================================= */
+
+.navbar {
+    position: relative;
+}
+
+.header-menu {
+    position: absolute !important;
+    left: 16px !important;
+    top: 18px !important;
+    right: auto !important;
+    bottom: auto !important;
+    z-index: 9999 !important;
+}
+
+.menu-dots {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.eco-version {
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 4px;
+    opacity: 0.8;
+    vertical-align: super;
+}
+/* EcoTrack 2.0 positioning */
+.eco-version {
+    position: relative;
+    top: 5px;
+    margin-left: -5px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ==========================================
+   ECOTRACK DARK MODE
+========================================== */
+
+body.dark-mode {
+    background: #101a17 !important;
+    color: #e5eee9 !important;
+    color-scheme: dark;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .card,
+body.dark-mode .dashboard-card,
+body.dark-mode .input-card,
+body.dark-mode .auth-card,
+body.dark-mode .history-item,
+body.dark-mode .section,
+body.dark-mode .chart-card,
+body.dark-mode .eco-card,
+body.dark-mode .profile-card,
+body.dark-mode .challenge-card,
+body.dark-mode .recommendation-card {
+    background-color: #1b2b25 !important;
+    color: #e5eee9 !important;
+    border-color: #344b40 !important;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode p,
+body.dark-mode label,
+body.dark-mode span,
+body.dark-mode strong,
+body.dark-mode small,
+body.dark-mode .nav-text,
+body.dark-mode .hero-text,
+body.dark-mode .auth-subtitle {
+    color: #e5eee9;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+    background-color: #24372f !important;
+    color: #ffffff !important;
+    border-color: #496456 !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #b5c6bc !important;
+}
+
+body.dark-mode button,
+body.dark-mode .back-home {
+    border-color: #496456;
+}
+
+body.dark-mode a {
+    color: #8ee0ad;
+}
+
+body.dark-mode .history-empty {
+    color: #d1e2d7 !important;
+}
+
+#ecoDarkModeToggle {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 99999;
+    border: 1px solid #7caa91;
+    border-radius: 30px;
+    padding: 11px 16px;
+    background: #173d2b;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+}
+
+#ecoDarkModeToggle:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+    #ecoDarkModeToggle {
+        right: 14px;
+        bottom: 14px;
+        padding: 10px 13px;
+    }
+}
+/* ==========================================
+   ECOTRACK DARK MODE - WEATHER & CHART FIX
+========================================== */
+
+body.dark-mode .ecoweather-section,
+body.dark-mode .weather-header,
+body.dark-mode .weather-main,
+body.dark-mode .weather-details,
+body.dark-mode .weather-detail,
+body.dark-mode .eco-forecast-card,
+body.dark-mode .forecast-day,
+body.dark-mode .forecast-weather,
+body.dark-mode .forecast-details,
+body.dark-mode .chart-container,
+body.dark-mode .chart-wrapper,
+body.dark-mode .chart-card,
+body.dark-mode .chart-section {
+    background-color: #1b2b25 !important;
+    color: #e5eee9 !important;
+    border-color: #344b40 !important;
+}
+
+body.dark-mode .weather-temperature,
+body.dark-mode .forecast-icon,
+body.dark-mode .forecast-temp,
+body.dark-mode .forecast-condition,
+body.dark-mode .weather-details *,
+body.dark-mode .eco-forecast-card *,
+body.dark-mode .forecast-day * {
+    color: #e5eee9 !important;
+}
+
+body.dark-mode canvas {
+    background-color: transparent !important;
+}
+
+body.dark-mode .ecoweather-section *,
+body.dark-mode .chart-card * {
+    border-color: #344b40;
+}
+
+
+/* ==========================================
+   DARK MODE - ALL PROFILE / LOCATION BLOCKS
+========================================== */
+
+/* Remove remaining white backgrounds from nested elements */
+body.dark-mode *:not(canvas):not(svg):not(path):not(img) {
+    background-color: transparent !important;
+    color: #e5eee9 !important;
+    border-color: #344b40 !important;
+}
+
+/* Main page and all common content blocks */
+body.dark-mode,
+body.dark-mode main,
+body.dark-mode section,
+body.dark-mode article,
+body.dark-mode .container,
+body.dark-mode .content,
+body.dark-mode .card,
+body.dark-mode .profile-card,
+body.dark-mode .profile-section,
+body.dark-mode .profile-container,
+body.dark-mode .location-card,
+body.dark-mode .location-section,
+body.dark-mode .job-card,
+body.dark-mode .job-section,
+body.dark-mode .dashboard-card,
+body.dark-mode .section,
+body.dark-mode .history-item,
+body.dark-mode .chart-card,
+body.dark-mode .ecoweather-section {
+    background: #1b2b25 !important;
+    color: #e5eee9 !important;
+    border-color: #344b40 !important;
+}
+
+/* Inputs and dropdowns */
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+    background: #24372f !important;
+    color: #ffffff !important;
+    border: 1px solid #496456 !important;
+}
+
+/* Buttons */
+body.dark-mode button {
+    color: #ffffff !important;
+}
+
+/* Links */
+body.dark-mode a {
+    color: #8ee0ad !important;
+}
+
+/* Tables and their cells */
+body.dark-mode table,
+body.dark-mode th,
+body.dark-mode td {
+    background: #1b2b25 !important;
+    color: #e5eee9 !important;
+    border-color: #344b40 !important;
+}
+
+
+/* DARK MODE - SPECIFIC ECOWEATHER & ECODASHBOARD BLOCKS */
+
+body.dark-mode #ecoWeather,
+body.dark-mode #ecoWeather *,
+body.dark-mode .eco-opportunity,
+body.dark-mode .eco-opportunity-card,
+body.dark-mode .opportunity-card,
+body.dark-mode .eco-dashboard,
+body.dark-mode #ecoDashboard,
+body.dark-mode .eco-score,
+body.dark-mode .eco-score-card,
+body.dark-mode #ecoScore,
+body.dark-mode .score-card {
+    background-color: #1b2b25 !important;
+    color: #e5eee9 !important;
+    border-color: #344b40 !important;
+}
+
+/* Catch nested white cards inside those sections */
+body.dark-mode .ecoweather-section .card,
+body.dark-mode .ecoweather-section [class*="opportun"],
+body.dark-mode .ecoweather-section [class*="opportunity"],
+body.dark-mode [class*="eco-dashboard"] [class*="score"],
+body.dark-mode [id*="ecoDashboard"] [class*="score"] {
+    background: #1b2b25 !important;
+    color: #e5eee9 !important;
+    border-color: #344b40 !important;
+}
+
+
+/* FIX: ECODASHBOARD ECO SCORE BLOCK */
+body.dark-mode .eco-dashboard .eco-score,
+body.dark-mode .eco-dashboard .eco-score-card,
+body.dark-mode #ecoDashboard .eco-score,
+body.dark-mode #ecoDashboard .eco-score-card,
+body.dark-mode .eco-dashboard [class*="score"],
+body.dark-mode #ecoDashboard [class*="score"] {
+    background: #1b2b25 !important;
+    background-color: #1b2b25 !important;
+    color: #e5eee9 !important;
+    border-color: #344b40 !important;
+}
+
+/* Make score number and /100 text readable */
+body.dark-mode .eco-dashboard .eco-score *,
+body.dark-mode .eco-dashboard .eco-score-card *,
+body.dark-mode #ecoDashboard .eco-score *,
+body.dark-mode #ecoDashboard .eco-score-card *,
+body.dark-mode .eco-dashboard [class*="score"] *,
+body.dark-mode #ecoDashboard [class*="score"] * {
+    color: #e5eee9 !important;
+}
+
+/* Score text may use inline styling */
+body.dark-mode .eco-dashboard [class*="score"] span,
+body.dark-mode #ecoDashboard [class*="score"] span {
+    color: #e5eee9 !important;
+}
+
+
+/* FIX: ONLY ECO SCORE CARD INSIDE YOUR ECO DASHBOARD */
+body.dark-mode #ecoDashboard > .dashboard-main-card {
+    background: #1b2b25 !important;
+    background-color: #1b2b25 !important;
+    color: #e5eee9 !important;
+    border: 1px solid #344b40 !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode #ecoDashboard > .dashboard-main-card h3,
+body.dark-mode #ecoDashboard > .dashboard-main-card p,
+body.dark-mode #ecoDashboard > .dashboard-main-card .dashboard-score,
+body.dark-mode #ecoDashboard > .dashboard-main-card .dashboard-score span,
+body.dark-mode #ecoDashboard > .dashboard-main-card .dashboard-score small {
+    color: #e5eee9 !important;
+}
+
+/* Keep the Eco Score icon area dark too */
+body.dark-mode #ecoDashboard > .dashboard-main-card .dashboard-icon {
+    background: #24372f !important;
+    color: #e5eee9 !important;
+}
+
+
+/* DARK MODE - KEEP CALCULATE BUTTONS GREEN */
+body.dark-mode .calculate-btn,
+body.dark-mode .eco-calculate-btn {
+    background: #07883f !important;
+    background-color: #07883f !important;
+    color: #ffffff !important;
+    border: 2px solid #07883f !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.dark-mode .calculate-btn:hover,
+body.dark-mode .eco-calculate-btn:hover {
+    background: #056b32 !important;
+    border-color: #056b32 !important;
+    color: #ffffff !important;
+}
+
+
+
+/* =====================================================
+   ECOTRACK FOOTER DESIGN
+===================================================== */
+
+.site-footer {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 45px;
+    padding: 38px 6% 18px;
+    overflow: hidden;
+    background: linear-gradient(120deg, #effaf3, #e5f6eb);
+    color: #24483b;
+    border-top: 1px solid #cce8d6;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr 1fr 1fr;
+    gap: 55px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-bottom: 32px;
+}
+
+.footer-brand,
+.footer-column {
+    min-width: 0;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #087b45;
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.footer-leaf {
+    font-size: 30px;
+}
+
+.footer-version {
+    padding: 3px 8px;
+    border-radius: 7px;
+    background: #159653;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.footer-brand p,
+.footer-follow p {
+    max-width: 290px;
+    margin: 18px 0;
+    color: #425f54;
+    line-height: 1.65;
+}
+
+.footer-column h3 {
+    margin: 4px 0 20px;
+    color: #087b45;
+    font-size: 19px;
+}
+
+.footer-column > a {
+    display: block;
+    width: fit-content;
+    margin: 0 0 13px;
+    color: #38594d;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-column > a:hover {
+    color: #07883f;
+    transform: translateX(3px);
+}
+
+.footer-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-bottom: 20px;
+}
+
+.footer-contact-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    min-width: 25px;
+    color: #07883f;
+    font-size: 21px;
+}
+
+.footer-contact-item strong,
+.footer-contact-item div > span {
+    display: block;
+}
+
+.footer-contact-item strong {
+    margin-bottom: 4px;
+    color: #087b45;
+}
+
+.footer-contact-item div > span {
+    color: #425f54;
+    overflow-wrap: anywhere;
+}
+
+.footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.footer-socials span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: #078b55;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.footer-follow-icons span:nth-child(2) {
+    background: #0877b9;
+}
+
+.footer-follow-icons span:nth-child(3) {
+    background: #26352f;
+}
+
+.footer-follow-icons span:nth-child(4) {
+    background: #e52d27;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 17px;
+    border-top: 1px solid #c5e3d0;
+    color: #38594d;
+    text-align: center;
+}
+
+.footer-tagline {
+    color: #087b45;
+    font-size: 13px;
+}
+
+/* DARK MODE */
+body.dark-mode .site-footer {
+    background: linear-gradient(120deg, #071f18, #0d2b20) !important;
+    color: #e5eee9 !important;
+    border-top: 1px solid #315b46 !important;
+}
+
+body.dark-mode .site-footer .footer-logo,
+body.dark-mode .site-footer .footer-column h3,
+body.dark-mode .site-footer .footer-contact-item strong,
+body.dark-mode .site-footer .footer-tagline {
+    color: #8ee0ad !important;
+}
+
+body.dark-mode .site-footer p,
+body.dark-mode .site-footer a,
+body.dark-mode .site-footer .footer-contact-item div > span,
+body.dark-mode .site-footer .footer-bottom {
+    color: #d2e5da !important;
+}
+
+body.dark-mode .site-footer .footer-version {
+    background: #159653 !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .site-footer .footer-bottom {
+    border-top-color: #315b46 !important;
+}
+
+body.dark-mode .site-footer .footer-socials span {
+    color: #ffffff !important;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 900px) {
+    .footer-content {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 35px;
+    }
+}
+
+@media (max-width: 560px) {
+    .site-footer {
+        padding: 30px 22px 18px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .footer-column h3 {
+        margin-bottom: 14px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 9px;
+        font-size: 13px;
+    }
+}
+
+/* FOOTER SOCIAL ICON BRAND COLORS - DARK MODE */
+
+body.dark-mode .site-footer .footer-socials span:nth-child(1) {
+    background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .site-footer .footer-socials span:nth-child(2) {
+    background: #0A66C2 !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .site-footer .footer-socials span:nth-child(3) {
+    background: #f0f0f0 !important;
+    color: #171717 !important;
+}
+
+body.dark-mode .site-footer .footer-socials span:nth-child(4) {
+    background: #FF0033 !important;
+    color: #ffffff !important;
+}
+
+
+/* FOOTER SOCIAL ICON BRAND COLORS - LIGHT MODE */
+
+.site-footer .footer-socials span:nth-child(1) {
+    background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5) !important;
+    color: #ffffff !important;
+}
+
+.site-footer .footer-socials span:nth-child(2) {
+    background: #0A66C2 !important;
+    color: #ffffff !important;
+}
+
+.site-footer .footer-socials span:nth-child(3) {
+    background: #f0f0f0 !important;
+    color: #171717 !important;
+}
+
+.site-footer .footer-socials span:nth-child(4) {
+    background: #FF0033 !important;
+    color: #ffffff !important;
+}
+
+
+
+/* FOOTER ORIGINAL SVG LOGOS */
+.site-footer .footer-socials span svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+}
+
+.site-footer .footer-socials span {
+    color: #ffffff;
+}
+
+.site-footer .footer-socials span:nth-child(3) {
+    color: #171717;
+}
+
+body.dark-mode .site-footer .footer-socials span:nth-child(3) {
+    color: #171717 !important;
+}
+
+/* Preserve existing footer social icon colours inside links */
+.site-footer .footer-socials a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.site-footer .footer-socials a:visited,
+.site-footer .footer-socials a:hover,
+.site-footer .footer-socials a:active {
+    color: inherit;
+}
+
+/* LinkedIn original blue logo */
+.site-footer .footer-socials span[title="LinkedIn"] {
+    background: #0A66C2 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* GitHub original dark logo */
+.site-footer .footer-socials span[title="GitHub"] svg {
+    color: #181717 !important;
+}
+
+.site-footer .footer-socials span[title="GitHub"] svg path {
+    fill: #181717 !important;
+}
+
+
+/* FIX: LinkedIn original blue logo */
+.site-footer .footer-socials a[aria-label="LinkedIn"] > span {
+    background: #0A66C2 !important;
+    background-image: none !important;
+    -webkit-text-fill-color: #ffffff !important;
+    color: #ffffff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 4px !important;
+}
+
+.site-footer .footer-socials a[aria-label="LinkedIn"] > span > span {
+    background: transparent !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* FIX: GitHub original logo colour */
+.site-footer .footer-socials a[aria-label="GitHub"] svg {
+    color: #181717 !important;
+    background: none !important;
+    background-image: none !important;
+}
+
+.site-footer .footer-socials a[aria-label="GitHub"] svg path {
+    fill: #181717 !important;
+}
+
+
+/* FINAL FIX: keep Instagram gradient only on Instagram */
+.site-footer .footer-socials a[aria-label="LinkedIn"] > span,
+.site-footer .footer-socials a[aria-label="LinkedIn"] > span > span {
+    background: #0A66C2 !important;
+    background-image: none !important;
+    background-clip: border-box !important;
+    -webkit-background-clip: border-box !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+.site-footer .footer-socials a[aria-label="GitHub"] > span {
+    background: transparent !important;
+    background-image: none !important;
+    color: #181717 !important;
+}
+
+.site-footer .footer-socials a[aria-label="GitHub"] svg,
+.site-footer .footer-socials a[aria-label="GitHub"] svg path {
+    background: none !important;
+    background-image: none !important;
+    fill: #181717 !important;
+    color: #181717 !important;
+}
+/* Green background for both Complete and Completed challenge buttons */
+.gamification-section button[id^="challenge-"] {
+    background-color: #22c55e !important;
+    color: #ffffff !important;
+    border: 1px solid #22c55e !important;
+}
+
